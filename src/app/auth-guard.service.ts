@@ -5,10 +5,10 @@ import { AuthService } from "./auth.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
+    constructor(private authService: AuthService, private router: Router) {}
 
-    constructor(private authService: AuthService, private router: Router) { }
-
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         return this.authService.isAuthenticated()
             .then(
             (authinticated: boolean) => {
@@ -16,10 +16,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     return true;
                 } else {
                     this.router.navigate(['/']);
-                    return false;
                 }
-            }
-            );
+            });
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
